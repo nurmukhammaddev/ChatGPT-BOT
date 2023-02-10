@@ -40,5 +40,6 @@ async def send(message : types.Message):
     stop=["You:"]
 )
     await message.answer(response['choices'][0]['text'])
+    await message.answer(f"Join our support group: https://t.me/chatgpt4sub_chat")
 
 executor.start_polling(dp, skip_updates=True)
