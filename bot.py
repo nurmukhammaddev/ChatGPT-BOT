@@ -39,8 +39,7 @@ async def send(message : types.Message):
     presence_penalty=0.6,
     stop=["You:"]
 )
-    wait = await message.answer("I am thinking...")
-    await message.answer(response['choices'][0]['text'], caption="Join our support group: https://t.me/chatgpt4sub_chat")
-    await wait.delete()
+    await message.answer(response['choices'][0]['text'])
+
 
 executor.start_polling(dp, skip_updates=True)
