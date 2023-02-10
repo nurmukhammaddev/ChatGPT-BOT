@@ -4,7 +4,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-bot = telebot.TeleBot(os.environ.get("TELEGRAM_BOT_TOKEN"))
+bot = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 bot = Bot(bot)
 dp = Dispatcher(bot)
