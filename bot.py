@@ -11,13 +11,26 @@ def handle_message(message):
     response = openai.Completion.create(
         engine="davinci",
         prompt=message.text,
-        temperature=0.5,
-        max_tokens=1000,
+        temperature=0.9,
+        max_tokens=150,
         top_p=1,
-        frequency_penalty=0.5,
-        presence_penalty=0.0,
+        frequency_penalty=0,
+        presence_penalty=0.6,
+        stop=["\n", " Human:", " AI:"],
     )
-    bot.send_message(chat_id=message.from_user.id, text=response['choices'][0]['text'])
+    bot.reply_to(message, response["choices"][0]["text"], parse_mode="Markdown")
 
 
-bot.polling()
+@bot.message_handler(commands=["start"])
+def send_welcome(message):
+    bot.reply_to(message, "Hello, I am ChatGPT-3 bot. I can talk to you. Ask me anything")
+
+    
+
+
+
+
+if __name__ == "__main__":
+    bot.polling()
+    
+
