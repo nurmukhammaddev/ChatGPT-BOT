@@ -1,36 +1,26 @@
 import openai
-import telebot
-import os
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 bot = telebot.TeleBot(os.environ.get("TELEGRAM_BOT_TOKEN"))
 
+bot = Bot(bot)
+dp = Dispatcher(bot)
 
-@bot.message_handler(func=lambda _: True)
-def handle_message(message):
+@dp.message_handler()
+async def send(message : types.Message):
     response = openai.Completion.create(
-        engine="davinci",
-        prompt=message.text,
-        temperature=0.9,
-        max_tokens=150,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0.6,
-        stop=["\n", " Human:", " AI:"],
-    )
-    bot.reply_to(message, response["choices"][0]["text"], parse_mode="Markdown")
+    model="text-davinci-003",
+    prompt=message.text,
+    temperature=0.9,
+    max_tokens=1000,
+    top_p=1.0,
+    frequency_penalty=0.0,
+    presence_penalty=0.6,
+    stop=["You:"]
+)
+    await message.answer(response['choices'][0]['text'])
 
-
-@bot.message_handler(commands=["start"])
-def send_welcome(message):
-    bot.reply_to(message, "Hello, I am ChatGPT-3 bot. I can talk to you. Ask me anything")
-
-    
-
-
-
-
-if __name__ == "__main__":
-    bot.polling()
-    
-
+executor.start_polling(dp, skip_updates=True)
