@@ -1,13 +1,18 @@
+import os
 import openai
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
-bot = os.environ.get("TELEGRAM_BOT_TOKEN")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+token = os.getenv("TOKEN")
 
-bot = Bot(bot)
+bot = Bot(token)
 dp = Dispatcher(bot)
+
+
+
+
 
 @dp.message_handler()
 async def send(message : types.Message):
@@ -21,6 +26,9 @@ async def send(message : types.Message):
     presence_penalty=0.6,
     stop=["You:"]
 )
+    wait = await message.answer("I am thinking... ⏳")
     await message.answer(response['choices'][0]['text'])
+    await wait.delete()
+
 
 executor.start_polling(dp, skip_updates=True)
