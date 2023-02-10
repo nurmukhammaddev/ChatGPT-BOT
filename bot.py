@@ -10,7 +10,8 @@ env.read_env()
 
 
 token = env.str("BOT_TOKEN")
-openai_api_key = os.environ.get('OPENAI_API_KEY')
+
+openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 
 bot = Bot(token)
